@@ -23,6 +23,7 @@ class Prompts {
         'ADD role',
         'ADD employee',
         'UPDATE employee role',
+        'Exit',
       ],
     });
   }

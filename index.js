@@ -47,6 +47,8 @@ const mainMenu = async () => {
       const { roleId: newRoleId } = await Prompts.getNewRole();
       DB.updateEmployeeRole(employeeId, newRoleId);
       mainMenu();
+    case 'Exit':
+      return;
     default:
       mainMenu();
   }
