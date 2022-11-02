@@ -22,8 +22,7 @@ class Methods {
   async getManagers() {
     const [[managerRole]] = await this.makeQuery('SELECT id FROM roles WHERE title = "manager"');
     const [managers] = await this.makeQuery(
-      'SELECT id, first_name, last_name FROM employees WHERE role_id = (?)',
-      managerRole.id
+      `SELECT id, first_name, last_name FROM employees WHERE role_id = ${managerRole.id}`
     );
     return managers;
   }
