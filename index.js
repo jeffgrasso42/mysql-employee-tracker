@@ -1,4 +1,5 @@
 const DB = require('./db/methods');
+const Prompts = require('./src/prompts');
 const { prompt } = require('inquirer');
 const { addDepartment } = require('./db/methods');
 const database = require('./db/connection');
@@ -6,72 +7,49 @@ const database = require('./db/connection');
 // DB.getDepartment().then(([data]) => console.log(data));
 
 const mainMenu = async () => {
-  prompt({
-    type: 'list',
-    name: 'action',
-    message: 'Please select your action:',
-    choices: ['VIEW department', 'VIEW role', 'VIEW employee', 'ADD department', 'ADD role', 'ADD employee'],
-  }).then(async ({ action }) => {
-    switch (action) {
-      case 'VIEW department':
-        DB.getDepartment().then(([data]) => {
-          console.table(data);
-          return mainMenu();
-        });
-        break;
-      case 'VIEW role':
-        DB.getRole().then(([data]) => {
-          console.table(data);
-          return mainMenu();
-        });
-        break;
-      case 'VIEW employee':
-        DB.getEmployee().then(([data]) => {
-          console.table(data);
-          return mainMenu();
-        });
-        break;
-      case 'ADD department':
-        await prompt({
-          type: 'input',
-          message: `Enter the name of the department you would like to add:`,
-          name: 'name',
-        }).then(async ({ name }) => {
-          console.log(name);
-          const data = await newDepartment();
-          console.table(data);
-        });
+  const { action } = await Prompts.getAction();
+  switch (action) {
+    case 'VIEW department':
+      DB.getDepartments().then(([data]) => {
+        console.table(data);
         mainMenu();
-        break;
-      case 'ADD role':
-        DB.addRole().then({});
-      case 'ADD employee':
-        DB.addEmployee().then({});
-        break;
-      default:
-        return mainMenu();
-    }
-  });
-};
-
-/**
- *
- * @returns {object} departments table
- */
-const newDepartment = () => {
-  let table;
-  prompt({
-    type: 'input',
-    message: 'Enter the name of the department you would like to add',
-    name: 'department',
-  }).then(response => {
-    console.log(response);
-    DB.addDepartment(response).then(([data]) => {
-      table = data;
-      // return mainMenu();
-    });
-  });
-  return table;
+      });
+      break;
+    case 'VIEW role':
+      DB.getRoles().then(([data]) => {
+        console.table(data);
+        mainMenu();
+      });
+      break;
+    case 'VIEW employee':
+      DB.getEmployees().then(([data]) => {
+        console.table(data);
+        mainMenu();
+      });
+      break;
+    case 'ADD department':
+      const { department } = await Prompts.getDepartment();
+      DB.addDepartment(department);
+      mainMenu();
+      break;
+    case 'ADD role':
+      const roleData = await Prompts.getRole();
+      DB.addRole(roleData);
+      mainMenu();
+      break;
+    case 'ADD employee':
+      const employeeData = await Prompts.getEmployee();
+      DB.addEmployee(employeeData);
+      mainMenu();
+      break;
+    case 'UPDATE employee role':
+      const { employeeId } = await Prompts.chooseEmployee();
+      const { roleId: newRoleId } = await Prompts.getNewRole();
+      DB.updateEmployeeRole(employeeId, newRoleId);
+      mainMenu();
+    default:
+      mainMenu();
+  }
 };
 
 mainMenu();
