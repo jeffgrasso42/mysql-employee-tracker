@@ -1,4 +1,5 @@
 // DEPENDENCIES
+// These Objects were instantiated where they were exported
 const DB = require('./db/methods');
 const Prompts = require('./src/prompts');
 

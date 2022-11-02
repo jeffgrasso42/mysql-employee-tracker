@@ -3,6 +3,8 @@ const { prompt } = require('inquirer');
 
 class Prompts {
   constructor() {}
+
+  // wraps inquirer prompt in promise
   askQuestion(questions) {
     return new Promise((resolve, reject) => {
       resolve(prompt(questions));
@@ -10,6 +12,7 @@ class Prompts {
     });
   }
 
+  // gets user's desired action
   getAction() {
     return this.askQuestion({
       type: 'list',
@@ -28,6 +31,7 @@ class Prompts {
     });
   }
 
+  // get name of new department
   getDepartment() {
     return this.askQuestion({
       type: 'input',
@@ -36,6 +40,7 @@ class Prompts {
     });
   }
 
+  // get data needed to add new role to company_db
   async getRole() {
     const [departments] = await DB.getDepartments();
     const formattedDepartments = departments.map(department => ({ value: department.id, name: department.dept_name }));
@@ -59,15 +64,15 @@ class Prompts {
     ]);
   }
 
+  // turn roles listed in company_db into array of inquirer compatable objects
   async getFormattedRoles() {
     const [roles] = await DB.getRoles();
     return roles.map(role => ({ value: role.id, name: role.title }));
   }
 
+  // get data needed for adding a new employee to company_db
   async getEmployee() {
-    const [roles] = await DB.getRoles();
-    const formattedRoles = roles.map(role => ({ value: role.id, name: role.title }));
-
+    const formattedRoles = await this.getFormattedRoles();
     const managers = await DB.getManagers();
     const formattedManagers = managers.map(manager => ({
       value: manager.id,
@@ -100,8 +105,10 @@ class Prompts {
     ]);
   }
 
+  // gets the name and id of the employee whose role the user wants to change
   async chooseEmployee() {
     const [employees] = await DB.getEmployees();
+    // makes query result an array compatable with inquirer
     const formattedEmployees = employees.map(employee => ({
       value: employee.id,
       name: `${employee.first_name} ${employee.last_name}`,
@@ -114,6 +121,7 @@ class Prompts {
     });
   }
 
+  // gets the new role to be assigned to the chosen employee
   async getNewRole() {
     const formattedRoles = await this.getFormattedRoles();
     return this.askQuestion({
@@ -125,4 +133,5 @@ class Prompts {
   }
 }
 
+// export instantiated object
 module.exports = new Prompts();
