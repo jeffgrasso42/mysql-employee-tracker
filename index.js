@@ -9,19 +9,19 @@ const Prompts = require('./src/prompts');
 const mainMenu = async () => {
   const { action } = await Prompts.getAction();
   switch (action) {
-    case 'VIEW department':
+    case 'VIEW departments':
       DB.getDepartments().then(([data]) => {
         console.table(data);
         mainMenu();
       });
       break;
-    case 'VIEW role':
+    case 'VIEW roles':
       DB.getRoles().then(([data]) => {
         console.table(data);
         mainMenu();
       });
       break;
-    case 'VIEW employee':
+    case 'VIEW employees':
       DB.getEmployees().then(([data]) => {
         console.table(data);
         mainMenu();

@@ -20,9 +20,9 @@ class Prompts {
       name: 'action',
       message: 'Please select your action:',
       choices: [
-        'VIEW department',
-        'VIEW role',
-        'VIEW employee',
+        'VIEW departments',
+        'VIEW roles',
+        'VIEW employees',
         'ADD department',
         'ADD role',
         'ADD employee',
