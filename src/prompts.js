@@ -1,9 +1,10 @@
 const DB = require('../db/methods');
 const { prompt } = require('inquirer');
 
+// collection of methods related to inquirer prompts,
+// abstracts promisified prompts by wrapping the promises in methods
 class Prompts {
   constructor() {}
-
   // wraps inquirer prompt in promise
   askQuestion(questions) {
     return new Promise((resolve, reject) => {

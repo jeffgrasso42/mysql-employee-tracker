@@ -1,13 +1,14 @@
 const connections = require('./connection');
 
+// collection of methods related to MySql queries
 class Methods {
   constructor(connection) {
     this.connection = connection;
   }
+  // wrapper for queries
   makeQuery(...params) {
     return this.connection.promise().query(...params);
   }
-  // add queries here
   getDepartments() {
     return this.makeQuery('SELECT * FROM departments');
   }
@@ -17,6 +18,7 @@ class Methods {
   getEmployees() {
     return this.makeQuery('SELECT * FROM employees');
   }
+  // returns list of managers
   async getManagers() {
     const [[managerRole]] = await this.makeQuery('SELECT id FROM roles WHERE title = "manager"');
     const [managers] = await this.makeQuery(
@@ -44,4 +46,5 @@ class Methods {
   }
 }
 
+// export instantiated object
 module.exports = new Methods(connections);
