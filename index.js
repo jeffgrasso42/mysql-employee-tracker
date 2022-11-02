@@ -1,11 +1,10 @@
+// DEPENDENCIES
 const DB = require('./db/methods');
 const Prompts = require('./src/prompts');
-const { prompt } = require('inquirer');
-const { addDepartment } = require('./db/methods');
-const database = require('./db/connection');
 
-// DB.getDepartment().then(([data]) => console.log(data));
+// FUNCTIONS
 
+// Display menu options to user and handle input
 const mainMenu = async () => {
   const { action } = await Prompts.getAction();
   switch (action) {
@@ -54,4 +53,5 @@ const mainMenu = async () => {
   }
 };
 
+// INITIALIZATION
 mainMenu();
