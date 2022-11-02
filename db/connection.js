@@ -3,10 +3,10 @@ require('dotenv').config();
 
 const db = mySql.createConnection(
   {
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.NAME,
+    host: 'localhost',
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
   },
   console.log(`Connected to the classlist_db database.`)
 );
