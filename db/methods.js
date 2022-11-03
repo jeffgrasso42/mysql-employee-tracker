@@ -1,4 +1,4 @@
-const connections = require('./connection');
+const connections = require('../config/connection');
 
 // collection of methods related to MySql queries
 class Methods {
